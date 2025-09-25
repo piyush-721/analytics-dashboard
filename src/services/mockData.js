@@ -1,0 +1,37 @@
+// services/mockData.js
+// services/mockData.js - Update the campaign names
+export const topListMock = [
+  { id: 1, campaign: "Discovery (LOC)", spend: 5000, installs: 1200, conversions: 300 },
+  { id: 2, campaign: "Competitor (LOC)", spend: 3000, installs: 800, conversions: 200 },
+  { id: 3, campaign: "Today tab (LOC)", spend: 7500, installs: 1800, conversions: 450 },
+  { id: 4, campaign: "Branding (LOC)", spend: 2500, installs: 600, conversions: 150 },
+  { id: 5, campaign: "Social Media Ads", spend: 4200, installs: 950, conversions: 280 },
+  { id: 6, campaign: "Search Marketing", spend: 6100, installs: 1400, conversions: 380 }
+];
+
+
+export const mockAPI = {
+  getSummaryData: () => 
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          metrics: [
+            { id: 'conv-roas-1', label: 'Conversions ROAS:', value: '0.00%', change: 0 },
+            { id: 'conv-roas-2', label: 'Conversions ROAS:', value: '$6,109.89', change: 27.42 },
+            { id: 'conv-roas-3', label: 'Conversions ROAS:', value: '0.00%', change: 0 },
+            { id: 'conv-roas-4', label: 'Conversions ROAS:', value: '$2,101', change: 0 },
+            { id: 'conv-roas-5', label: 'Conversions ROAS:', value: '$2.91', change: 0 },
+            { id: 'conv-roas-6', label: 'Conversions ROAS:', value: '0', change: 0 },
+            { id: 'conv-roas-7', label: 'Conversions ROAS:', value: '$0.00', change: 0 }
+          ]
+        });
+      }, 800);
+    }),
+
+  getTopListData: () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(topListMock);
+      }, 600);
+    })
+};
