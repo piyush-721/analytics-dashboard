@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import TotalSummary from '../components/TotalSummary';
 import TopList from '../components/TopList';
+import BiggestChanges from '../components/BiggestChanges';
 
 const Dashboard = () => {
   return (
@@ -90,7 +91,7 @@ const Dashboard = () => {
                   boxShadow: '0px 4px 26.4px 0px rgba(0, 0, 0, 0.05)'
                 }}
               >
-                <div className="text-gray-500">Biggest Changes content...</div>
+                <div className="text-gray-500"><BiggestChanges /></div>
               </div>
             </div>
           </div>

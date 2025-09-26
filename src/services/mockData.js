@@ -1,13 +1,17 @@
 // services/mockData.js
 // services/mockData.js - Update the campaign names
+// services/mockData.js - Updated with correct colors
+// services/mockData.js 
 export const topListMock = [
-  { id: 1, campaign: "Discovery (LOC)", spend: 5000, installs: 1200, conversions: 300 },
-  { id: 2, campaign: "Competitor (LOC)", spend: 3000, installs: 800, conversions: 200 },
-  { id: 3, campaign: "Today tab (LOC)", spend: 7500, installs: 1800, conversions: 450 },
-  { id: 4, campaign: "Branding (LOC)", spend: 2500, installs: 600, conversions: 150 },
-  { id: 5, campaign: "Social Media Ads", spend: 4200, installs: 950, conversions: 280 },
-  { id: 6, campaign: "Search Marketing", spend: 6100, installs: 1400, conversions: 380 }
+  { id: 1, campaign: "Discovery (LOC)", spend: 5000, installs: 1200, conversions: 300, color: '#FF6200' },
+  { id: 2, campaign: "Competitor (LOC)", spend: 3000, installs: 800, conversions: 200, color: '#FF6200' },
+  { id: 3, campaign: "Today tab (LOC)", spend: 7500, installs: 1800, conversions: 450, color: '#F7CE02' },
+  { id: 4, campaign: "Branding (LOC)", spend: 2500, installs: 600, conversions: 150, color: '#F7CE02' },
+  { id: 5, campaign: "Search Marketing", spend: 6100, installs: 1400, conversions: 380, color: '#FF6200' },
+  { id: 6, campaign: "Social Media Ads", spend: 4200, installs: 950, conversions: 280, color: '#F7CE02' }
 ];
+
+
 
 
 export const mockAPI = {
