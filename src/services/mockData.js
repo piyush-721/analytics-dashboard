@@ -11,8 +11,16 @@ export const topListMock = [
   { id: 6, campaign: "Social Media Ads", spend: 4200, installs: 950, conversions: 280, color: '#F7CE02' }
 ];
 
-
-
+// NEW: Trends Chart Data
+export const trendsMock = [
+  { date: "2025-09-20", spend: 1200, revenue: 4500, conversions: 50 },
+  { date: "2025-09-21", spend: 1400, revenue: 4800, conversions: 60 },
+  { date: "2025-09-22", spend: 1600, revenue: 5000, conversions: 70 },
+  { date: "2025-09-23", spend: 1800, revenue: 5200, conversions: 80 },
+  { date: "2025-09-24", spend: 1500, revenue: 4900, conversions: 65 },
+  { date: "2025-09-25", spend: 1700, revenue: 5300, conversions: 75 },
+  { date: "2025-09-26", spend: 2000, revenue: 5800, conversions: 90 }
+];
 
 export const mockAPI = {
   getSummaryData: () => 
@@ -37,5 +45,13 @@ export const mockAPI = {
       setTimeout(() => {
         resolve(topListMock);
       }, 600);
+    }),
+
+  // NEW: Trends Chart API
+  getTrendsData: () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(trendsMock);
+      }, 500);
     })
 };
