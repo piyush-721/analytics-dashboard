@@ -1,8 +1,171 @@
 // components/TrendsChart.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 const TrendsChart = () => {
   const [selectedMetric, setSelectedMetric] = useState('Spend');
+  const chartRef = useRef();
+
+  // Mock data that matches your image pattern
+  const trendData = {
+    labels: ['5 July', '5 July', '5 July', '5 July', '5 July', '5 July', '5 July'],
+    spend: [27.42, 27.42, 27.42, 65, 75, 45, 85], // Orange line pattern from image
+    installs: [15, 25, 35, 45, 55, 40, 70],
+    conversions: [5, 10, 15, 20, 25, 30, 35]
+  };
+
+  // Function to determine segment colors (orange main, blue at end)
+  const getSegmentColor = (ctx) => {
+    const { p0, p1 } = ctx;
+    const dataIndex = p0.parsed ? p0.parsed.x : 0;
+    
+    // Blue color for the last segment (like in your image)
+    if (dataIndex >= 5) {
+      return 'rgb(59, 130, 246)'; // Blue color
+    }
+    
+    // Orange color for main line
+    return '#FF6200'; // Your brand orange
+  };
+
+  const data = {
+    labels: trendData.labels,
+    datasets: [
+      {
+        label: selectedMetric,
+        data: trendData[selectedMetric.toLowerCase()],
+        borderColor: '#FF6200', // Default orange
+        backgroundColor: 'rgba(255, 98, 0, 0.1)', // Light orange background
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4, // Smooth curves like in your image
+        pointRadius: 0, // Hide points for clean look
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: '#FF6200',
+        pointHoverBorderColor: '#ffffff',
+        pointHoverBorderWidth: 2,
+        segment: {
+          borderColor: ctx => getSegmentColor(ctx), // Dynamic segment colors
+        },
+        // Gradient background fill
+        backgroundColor: (context) => {
+          const ctx = context.chart.ctx;
+          const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+          gradient.addColorStop(0, 'rgba(255, 98, 0, 0.15)');   // Orange at top
+          gradient.addColorStop(0.5, 'rgba(255, 98, 0, 0.05)'); // Fade to light orange
+          gradient.addColorStop(1, 'rgba(255, 98, 0, 0.01)');   // Almost transparent at bottom
+          return gradient;
+        }
+      }
+    ]
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false // Hide legend as you have custom header
+      },
+      tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        borderColor: '#FF6200',
+        borderWidth: 1,
+        displayColors: false,
+        callbacks: {
+          title: function(context) {
+            return context[0].label;
+          },
+          label: function(context) {
+            return `${selectedMetric}: $${context.parsed.y.toFixed(2)}K`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        display: true,
+        grid: {
+          display: false // Clean look without grid lines
+        },
+        ticks: {
+          color: '#9CA3AF',
+          font: {
+            size: 11
+          },
+          maxTicksLimit: 7
+        },
+        border: {
+          display: false
+        }
+      },
+      y: {
+        display: false, // Hide Y axis for minimal look like your image
+        grid: {
+          display: false
+        },
+        border: {
+          display: false
+        }
+      }
+    },
+    elements: {
+      line: {
+        borderWidth: 3
+      }
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index'
+    },
+    // Custom plugin to show percentage labels on the line
+    plugins: [{
+      id: 'percentageLabels',
+      afterDatasetsDraw: function(chart) {
+        const ctx = chart.ctx;
+        chart.data.datasets.forEach((dataset, i) => {
+          const meta = chart.getDatasetMeta(i);
+          meta.data.forEach((element, index) => {
+            // Show percentage only for some points (like in your image)
+            if (index < 6) { // Show for first 6 points
+              ctx.fillStyle = '#F59E0B'; // Orange color for text
+              ctx.font = '12px Inter, sans-serif';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'bottom';
+              
+              const percentage = '$27.42%'; // Your static percentage from image
+              const position = element.tooltipPosition();
+              ctx.fillText(percentage, position.x, position.y - 10);
+            }
+          });
+        });
+      }
+    }]
+  };
 
   return (
     <>
@@ -76,11 +239,9 @@ const TrendsChart = () => {
           </div>
         </div>
 
-        {/* Chart Area Placeholder - takes remaining space */}
-        <div className="flex-1 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center mb-4">
-          <div className="text-gray-500 text-sm">
-            Chart area - will add line chart next
-          </div>
+        {/* Chart Area - Chart.js Line Chart */}
+        <div className="flex-1 mb-4" style={{ minHeight: '300px' }}>
+          <Line ref={chartRef} data={data} options={options} />
         </div>
 
         {/* Horizontal Line */}
@@ -138,10 +299,18 @@ const TrendsChart = () => {
         </div>
 
         {/* Chart Area - Mobile optimized */}
-        <div className="flex-1 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center mb-3 min-h-[200px]">
-          <div className="text-gray-500 text-xs text-center">
-            Chart area - will add line chart next
-          </div>
+        <div className="flex-1 mb-3 min-h-[200px]">
+          <Line data={data} options={{
+            ...options,
+            plugins: {
+              ...options.plugins,
+              tooltip: {
+                ...options.plugins.tooltip,
+                titleFont: { size: 12 },
+                bodyFont: { size: 11 }
+              }
+            }
+          }} />
         </div>
 
         {/* Bottom Legend - Mobile */}
