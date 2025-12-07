@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 
 const WORLD_GEOJSON_URL = '/geo/world.geojson';
-
 const StoreFrontMap = () => {
   const { storefrontsData = [] } = useSelector(
     (state) => state.dashboard || {}

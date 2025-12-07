@@ -6,7 +6,8 @@ import TotalSummary from '../components/TotalSummary';
 import TopList from '../components/TopList';
 import BiggestChanges from '../components/BiggestChanges';
 import TrendsChart from '../components/TrendsChart';
-import StoreFrontMap from '../components/StoreFrontsMap';
+// import StoreFrontMap from '../components/StorefrontsMap';
+import StoreFrontMap from '../components/StorefrontsMap';
 
 const Dashboard = () => {
   return (
