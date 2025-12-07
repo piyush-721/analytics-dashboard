@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useTrendsData } from '../hooks/useTrendsData';
+import { useDashboardData } from '../hooks/useDashboardData';
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +28,9 @@ ChartJS.register(
 
 const TrendsChart = () => {
   const [selectedMetric, setSelectedMetric] = useState('Spend');
-  const { data: trendsData, loading, error } = useTrendsData();
+  // const { data: trendsData, loading, error } = useTrendsData();
+  const { trends: trendsData, loading, error } = useDashboardData();
+
 
   if (loading) {
     return (
@@ -94,14 +97,22 @@ const TrendsChart = () => {
         borderColor: '#FF6200',
         backgroundColor: (context) => {
           const ctx = context.chart.ctx;
-          const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-          gradient.addColorStop(0, 'rgba(255, 98, 0, 0.15)');
-          gradient.addColorStop(0.7, 'rgba(255, 98, 0, 0.08)');
-          gradient.addColorStop(1, 'rgba(255, 98, 0, 0.02)');
+          const chartArea = context.chart.chartArea;
+          
+          if (!chartArea) {
+            return null;
+          }
+          
+          // Simple gradient from top to bottom
+          const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          gradient.addColorStop(0, 'rgba(255, 98, 0, 0.1)');     // Top - light orange
+          gradient.addColorStop(0.5, 'rgba(255, 98, 0, 0.15)');  // Middle - stronger
+          gradient.addColorStop(1, 'rgba(255, 98, 0, 0.02)');    // Bottom - very light
+          
           return gradient;
         },
         borderWidth: 2,
-        fill: true,
+        fill: 'start', // Fill from top of chart to line
         tension: 0, // STRAIGHT LINES
         pointRadius: 0,
         pointHoverRadius: 5,
@@ -174,7 +185,11 @@ const TrendsChart = () => {
         display: true,
         position: 'left',
         grid: {
-          display: false
+          display: true, // Show horizontal grid lines
+          color: 'rgba(0, 0, 0, 0.04)', // Very faint gray lines
+          lineWidth: 1,
+          drawTicks: false,
+          drawBorder: false
         },
         ticks: {
           color: '#F59E0B', // Orange color for Y-axis

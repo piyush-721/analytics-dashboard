@@ -1,27 +1,41 @@
-// hooks/useDashboardData.js
-import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { mockAPI } from '../services/mockData';
+import { setSummary, setTopList, setTrends } from '../store/dashboardSlice';
 
 export const useDashboardData = () => {
-  const [data, setData] = useState(null);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const { summary, topList, trends } = useSelector(state => state.dashboard);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
-        const result = await mockAPI.getSummaryData();
-        setData(result);
+        setError(null);
+        
+        await Promise.all([
+          mockAPI.getSummaryData().then(data => dispatch(setSummary(data.metrics))),
+          mockAPI.getTopListData().then(data => dispatch(setTopList(data))),
+          mockAPI.getTrendsData().then(data => dispatch(setTrends(data)))
+        ]);
       } catch (err) {
-        setError(err.message);
+        setError('Failed to load data');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    loadData();
+  }, [dispatch]);
 
-  return { data, loading, error };
+  return { 
+    summary, 
+    topList, 
+    trends, 
+    loading,
+    error 
+  };
 };

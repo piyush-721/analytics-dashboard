@@ -1,12 +1,11 @@
-// store/dashboardSlice.js - Scalable Store
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { mockAPI } from '../services/mockData'; // ADD THIS IMPORT
 
-// Async thunk for fetching storefronts data
+// Async thunk for fetching storefronts data (your existing)
 export const fetchStorefrontsData = createAsyncThunk(
   'dashboard/fetchStorefrontsData',
   async (_, { rejectWithValue }) => {
     try {
-      // Replace with your API endpoint
       const response = await fetch('/api/storefronts');
       if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
@@ -18,7 +17,7 @@ export const fetchStorefrontsData = createAsyncThunk(
 );
 
 const initialState = {
-  // Scalable storefronts data structure
+  // Your existing storefronts data
   storefrontsData: [
     { country: 'IN', countryName: 'India', value: 6109.89, region: 'Asia', currency: 'USD' },
     { country: 'US', countryName: 'United States', value: 8500.50, region: 'North America', currency: 'USD' },
@@ -27,7 +26,12 @@ const initialState = {
     { country: 'AU', countryName: 'Australia', value: 2900.90, region: 'Oceania', currency: 'AUD' }
   ],
   
-  // Map configuration
+  // NEW: Add these for dashboard components
+  summary: [],
+  topList: [],
+  trends: [],
+  
+  // Your existing mapConfig, filters
   mapConfig: {
     colorScale: {
       noData: '#F3E6A3',
@@ -44,7 +48,6 @@ const initialState = {
     }
   },
   
-  // Filtering and grouping
   filters: {
     selectedRegions: [],
     minSpend: 0,
@@ -61,12 +64,11 @@ const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
   reducers: {
-    // Add new storefront
+    // Your existing reducers
     addStorefront: (state, action) => {
       state.storefrontsData.push(action.payload);
     },
     
-    // Update existing storefront
     updateStorefront: (state, action) => {
       const { country, updates } = action.payload;
       const index = state.storefrontsData.findIndex(item => item.country === country);
@@ -75,21 +77,31 @@ const dashboardSlice = createSlice({
       }
     },
     
-    // Remove storefront
     removeStorefront: (state, action) => {
       state.storefrontsData = state.storefrontsData.filter(
         item => item.country !== action.payload
       );
     },
     
-    // Update filters
     setFilters: (state, action) => {
       state.filters = { ...state.filters, ...action.payload };
     },
     
-    // Update map config
     setMapConfig: (state, action) => {
       state.mapConfig = { ...state.mapConfig, ...action.payload };
+    },
+    
+    // NEW: Normal reducers for dashboard data (NO THUNKS)
+    setSummary: (state, action) => {
+      state.summary = action.payload;
+    },
+    
+    setTopList: (state, action) => {
+      state.topList = action.payload;
+    },
+    
+    setTrends: (state, action) => {
+      state.trends = action.payload;
     }
   },
   
@@ -116,7 +128,11 @@ export const {
   updateStorefront, 
   removeStorefront, 
   setFilters, 
-  setMapConfig 
+  setMapConfig,
+  // NEW EXPORTS
+  setSummary,
+  setTopList,
+  setTrends
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

@@ -1,9 +1,11 @@
 // components/BiggestChanges.jsx
 import React, { useState, useEffect } from 'react';
 import { useTopListData } from '../hooks/useTopListData';
+import { useDashboardData } from '../hooks/useDashboardData';
 
 const BiggestChanges = () => {
-  const { data, loading, error } = useTopListData();
+  // const { data, loading, error } = useTopListData();
+  const { topList: data, loading, error } = useDashboardData();
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [sortedData, setSortedData] = useState([]);
 

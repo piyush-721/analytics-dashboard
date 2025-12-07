@@ -15,7 +15,7 @@ const Dashboard = () => {
         <Header />
         
         {/* Desktop: EXACT original layout */}
-        <div 
+        <div
           className="p-6 bg-white opacity-100 relative lg:block hidden"
           style={{
             width: '1314px',
@@ -33,7 +33,7 @@ const Dashboard = () => {
             {/* Top Left - Storefronts */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Storefronts</h3>
-              <div 
+              <div
                 className="bg-white border border-gray-300 rounded-xl opacity-100 p-4"
                 style={{
                   width: '598px',
