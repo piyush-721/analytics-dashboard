@@ -6,6 +6,7 @@ import TotalSummary from '../components/TotalSummary';
 import TopList from '../components/TopList';
 import BiggestChanges from '../components/BiggestChanges';
 import TrendsChart from '../components/TrendsChart';
+import StoreFrontMap from '../components/StoreFrontsMap';
 
 const Dashboard = () => {
   return (
@@ -43,7 +44,7 @@ const Dashboard = () => {
                   boxShadow: '0px 4px 26.4px 0px rgba(0, 0, 0, 0.05)'
                 }}
               >
-                <div className="text-gray-500">Storefronts content...</div>
+                <StoreFrontMap />
               </div>
             </div>
 
@@ -100,20 +101,18 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Mobile: Fixed overlapping issue with MUCH LARGER heights */}
+        {/* Mobile: Stacked layout */}
         <div className="lg:hidden p-4 bg-gray-50 min-h-screen pb-32">
           <TotalSummary />
           
-          {/* Mobile: Stacked components with MAXIMUM space to prevent overlap */}
-          <div className="mt-8 space-y-12"> {/* Increased spacing from space-y-8 to space-y-12 */}
-            
+          <div className="mt-8 space-y-12">
             {/* Storefronts */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
               <div className="p-4 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Storefronts</h3>
               </div>
               <div className="p-4 h-80 flex items-center justify-center text-gray-500">
-                Storefronts content...
+                <StoreFrontMap />
               </div>
             </div>
 
@@ -122,31 +121,30 @@ const Dashboard = () => {
               <div className="p-4 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Trends</h3>
               </div>
-              <div className="h-[30rem]"> {/* Slightly increased */}
+              <div className="h-[30rem]">
                 <TrendsChart />
               </div>
             </div>
 
-            {/* Top List - MAXIMUM height to prevent overlap */}
+            {/* Top List */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
               <div className="p-4 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Top List</h3>
               </div>
-              <div className="h-[50rem]"> {/* SIGNIFICANTLY increased from h-[42rem] to h-[50rem] (800px) */}
+              <div className="h-[50rem]">
                 <TopList />
               </div>
             </div>
 
-            {/* Biggest Changes - Also increased to ensure no overlap */}
+            {/* Biggest Changes */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
               <div className="p-4 border-b border-gray-100">
                 <h3 className="text-lg font-semibold text-gray-900">Biggest Changes</h3>
               </div>
-              <div className="h-[45rem]"> {/* Increased from h-[38rem] to h-[45rem] (720px) */}
+              <div className="h-[45rem]">
                 <BiggestChanges />
               </div>
             </div>
-            
           </div>
         </div>
       </div>
